@@ -208,11 +208,11 @@ const annotationPlugin = {
     ctx.save();
     ctx.fillStyle = '#4ade80';
     ctx.font = `bold 14px ${fontFamily}`;
-    ctx.textAlign = 'center';
-    ctx.fillText('$4.44M', drop.x, drop.y - 18);
+    ctx.textAlign = 'right';
+    ctx.fillText('$4.44M', drop.x + 4, drop.y - 18);
     ctx.font = `10px ${fontFamily}`;
     ctx.fillStyle = 'rgba(74, 222, 128, 0.75)';
-    ctx.fillText('AI-driven detection', drop.x, drop.y - 5);
+    ctx.fillText('AI-driven detection', drop.x + 4, drop.y - 5);
     ctx.restore();
 
     const trough = meta.data[2];
@@ -241,7 +241,7 @@ new Chart(ctx, {
     responsive: true,
     maintainAspectRatio: false,
     layout: {
-      padding: { top: 40, right: 20, bottom: 8, left: 8 }
+      padding: { top: 40, right: 80, bottom: 8, left: 8 }
     },
     scales: {
       x: {
