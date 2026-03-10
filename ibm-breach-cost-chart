@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Global Average Cost of a Data Breach (2018-2025)</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<style>
+  @font-face {
+    font-family: 'Aptos';
+    src: local('Aptos'), local('Aptos Display'), local('Calibri');
+    font-weight: 400;
+  }
+  @font-face {
+    font-family: 'Aptos';
+    src: local('Aptos Bold'), local('Aptos Display Bold'), local('Calibri Bold');
+    font-weight: 700;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: 'Aptos', 'Calibri', 'Segoe UI', sans-serif;
+    background: #0a0e1a;
+    padding: 0;
+    overflow: hidden;
+  }
+  .chart-container {
+    width: 100%;
+    max-width: 100%;
+    background: linear-gradient(160deg, #141a30 0%, #0f1535 40%, #111833 100%);
+    border-radius: 0;
+    padding: 32px 28px 24px 28px;
+    border: none;
+    box-shadow: none;
+  }
+  .chart-top-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 20px;
+  }
+  .chart-header {
+    flex: 1;
+  }
+  .chart-title {
+    font-size: 20px;
+    font-weight: 700;
+    color: #ffffff;
+    line-height: 1.3;
+    letter-spacing: -0.2px;
+  }
+  .chart-subtitle {
+    font-size: 13px;
+    color: rgba(255, 255, 255, 0.5);
+    margin-top: 4px;
+    line-height: 1.4;
+  }
+  .chart-wrapper {
+    position: relative;
+    height: 360px;
+  }
+  .chart-source {
+    font-size: 10.5px;
+    color: rgba(255, 255, 255, 0.3);
+    margin-top: 16px;
+    line-height: 1.5;
+  }
+  .chart-source a {
+    color: rgba(255, 255, 255, 0.3);
+    text-decoration: underline;
+  }
+  .stat-row {
+    display: flex;
+    gap: 16px;
+    margin-top: 20px;
+    padding-top: 18px;
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+  }
+  .stat-box {
+    flex: 1;
+    text-align: center;
+    padding: 12px 8px;
+    background: rgba(255, 255, 255, 0.03);
+    border-radius: 8px;
+    border: 1px solid rgba(255, 255, 255, 0.06);
+  }
+  .stat-value {
+    font-size: 24px;
+    font-weight: 700;
+    color: #ffffff;
+    letter-spacing: -0.5px;
+  }
+  .stat-value.up { color: #ef6461; }
+  .stat-value.down { color: #4ade80; }
+  .stat-value.accent { color: #2074ed; }
+  .stat-label {
+    font-size: 10.5px;
+    color: rgba(255, 255, 255, 0.45);
+    margin-top: 4px;
+    line-height: 1.4;
+  }
+  .felcorp-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 16px;
+    padding-top: 12px;
+    border-top: 1px solid rgba(255, 255, 255, 0.06);
+  }
+  .felcorp-footer span {
+    font-size: 10px;
+    color: rgba(255, 255, 255, 0.25);
+    letter-spacing: 0.3px;
+  }
+</style>
+</head>
+<body>
+<div class="chart-container">
+  <div class="chart-top-bar">
+    <div class="chart-header">
+      <div class="chart-title">Global Average Cost of a Data Breach</div>
+      <div class="chart-subtitle">USD millions per incident, 2018 to 2025</div>
+    </div>
+  </div>
+  <div class="chart-wrapper">
+    <canvas id="breachChart"></canvas>
+  </div>
+  <div class="stat-row">
+    <div class="stat-box">
+      <div class="stat-value up">+26.4%</div>
+      <div class="stat-label">Increase from 2020 trough<br>to 2024 peak</div>
+    </div>
+    <div class="stat-box">
+      <div class="stat-value down">-9.0%</div>
+      <div class="stat-label">First decline in five years<br>(2024 to 2025)</div>
+    </div>
+    <div class="stat-box">
+      <div class="stat-value accent">+15.0%</div>
+      <div class="stat-label">Total increase<br>2018 to 2025</div>
+    </div>
+  </div>
+  <div class="chart-source">
+    Source: IBM/Ponemon Institute, Cost of a Data Breach Report (2018--2025). Activity-based costing across detection, notification, post-breach response and lost business. Sample: 477 to 604 organisations per year across 16+ countries.
+  </div>
+  <div class="felcorp-footer">
+    <span>Felcorp Support &copy;</span>
+  </div>
+</div>
+
+<script>
+const ctx = document.getElementById('breachChart').getContext('2d');
+
+const gradient = ctx.createLinearGradient(0, 0, 0, 360);
+gradient.addColorStop(0, 'rgba(32, 116, 237, 0.25)');
+gradient.addColorStop(0.6, 'rgba(32, 116, 237, 0.06)');
+gradient.addColorStop(1, 'rgba(32, 116, 237, 0)');
+
+const data = {
+  labels: ['2018', '2019', '2020', '2021', '2022', '2023', '2024', '2025'],
+  datasets: [{
+    label: 'Average Cost (USD millions)',
+    data: [3.86, 3.92, 3.86, 4.24, 4.35, 4.45, 4.88, 4.44],
+    borderColor: '#2074ed',
+    backgroundColor: gradient,
+    borderWidth: 2.5,
+    pointBackgroundColor: function(context) {
+      const i = context.dataIndex;
+      if (i === 6) return '#ef6461';
+      if (i === 7) return '#4ade80';
+      return '#2074ed';
+    },
+    pointBorderColor: function(context) {
+      const i = context.dataIndex;
+      if (i === 6) return '#ef6461';
+      if (i === 7) return '#4ade80';
+      return '#2074ed';
+    },
+    pointBorderWidth: 2,
+    pointRadius: function(context) {
+      const i = context.dataIndex;
+      if (i === 6 || i === 7) return 7;
+      return 4;
+    },
+    pointHoverRadius: 8,
+    fill: true,
+    tension: 0.3
+  }]
+};
+
+const annotationPlugin = {
+  id: 'customAnnotations',
+  afterDatasetsDraw(chart) {
+    const { ctx } = chart;
+    const meta = chart.getDatasetMeta(0);
+    const fontFamily = "'Aptos', 'Calibri', 'Segoe UI', sans-serif";
+
+    const peak = meta.data[6];
+    ctx.save();
+    ctx.fillStyle = '#ef6461';
+    ctx.font = `bold 14px ${fontFamily}`;
+    ctx.textAlign = 'center';
+    ctx.fillText('$4.88M', peak.x - 4, peak.y - 18);
+    ctx.font = `10px ${fontFamily}`;
+    ctx.fillStyle = 'rgba(239, 100, 97, 0.75)';
+    ctx.fillText('All-time high', peak.x - 4, peak.y - 5);
+    ctx.restore();
+
+    const drop = meta.data[7];
+    ctx.save();
+    ctx.fillStyle = '#4ade80';
+    ctx.font = `bold 14px ${fontFamily}`;
+    ctx.textAlign = 'center';
+    ctx.fillText('$4.44M', drop.x, drop.y - 18);
+    ctx.font = `10px ${fontFamily}`;
+    ctx.fillStyle = 'rgba(74, 222, 128, 0.75)';
+    ctx.fillText('AI-driven detection', drop.x, drop.y - 5);
+    ctx.restore();
+
+    const trough = meta.data[2];
+    ctx.save();
+    ctx.fillStyle = 'rgba(255, 255, 255, 0.45)';
+    ctx.font = `11px ${fontFamily}`;
+    ctx.textAlign = 'center';
+    ctx.fillText('$3.86M', trough.x, trough.y + 22);
+    ctx.restore();
+
+    const start = meta.data[0];
+    ctx.save();
+    ctx.fillStyle = 'rgba(255, 255, 255, 0.45)';
+    ctx.font = `11px ${fontFamily}`;
+    ctx.textAlign = 'center';
+    ctx.fillText('$3.86M', start.x, start.y + 22);
+    ctx.restore();
+  }
+};
+
+new Chart(ctx, {
+  type: 'line',
+  data: data,
+  plugins: [annotationPlugin],
+  options: {
+    responsive: true,
+    maintainAspectRatio: false,
+    layout: {
+      padding: { top: 40, right: 20, bottom: 8, left: 8 }
+    },
+    scales: {
+      x: {
+        grid: {
+          display: true,
+          color: 'rgba(255, 255, 255, 0.04)',
+          drawBorder: false
+        },
+        ticks: {
+          font: { family: "'Aptos', 'Calibri', sans-serif", size: 12, weight: '500' },
+          color: 'rgba(255, 255, 255, 0.5)'
+        },
+        border: { color: 'rgba(255, 255, 255, 0.1)' }
+      },
+      y: {
+        min: 3.4,
+        max: 5.3,
+        ticks: {
+          callback: function(value) { return '$' + value.toFixed(1) + 'M'; },
+          font: { family: "'Aptos', 'Calibri', sans-serif", size: 11 },
+          color: 'rgba(255, 255, 255, 0.3)',
+          stepSize: 0.4
+        },
+        grid: {
+          color: 'rgba(255, 255, 255, 0.04)',
+          drawBorder: false
+        },
+        border: { display: false }
+      }
+    },
+    plugins: {
+      legend: { display: false },
+      tooltip: {
+        backgroundColor: 'rgba(20, 26, 48, 0.95)',
+        borderColor: 'rgba(32, 116, 237, 0.3)',
+        borderWidth: 1,
+        titleFont: { family: "'Aptos', 'Calibri', sans-serif", size: 12, weight: '600' },
+        titleColor: 'rgba(255, 255, 255, 0.7)',
+        bodyFont: { family: "'Aptos', 'Calibri', sans-serif", size: 13 },
+        bodyColor: '#ffffff',
+        padding: 12,
+        cornerRadius: 8,
+        displayColors: false,
+        callbacks: {
+          label: function(context) {
+            return '$' + context.parsed.y.toFixed(2) + ' million';
+          }
+        }
+      }
+    },
+    interaction: {
+      intersect: false,
+      mode: 'index'
+    }
+  }
+});
+</script>
+</body>
+</html>
