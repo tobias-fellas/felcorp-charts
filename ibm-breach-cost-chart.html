@@ -111,6 +111,38 @@
     color: rgba(255, 255, 255, 0.25);
     letter-spacing: 0.3px;
   }
+  @media (max-width: 767px) {
+    .chart-container {
+      padding: 20px 16px 16px 16px;
+    }
+    .chart-title {
+      font-size: 17px;
+    }
+    .chart-subtitle {
+      font-size: 12px;
+    }
+    .chart-wrapper {
+      height: 280px;
+    }
+    .stat-row {
+      gap: 8px;
+      margin-top: 14px;
+      padding-top: 14px;
+    }
+    .stat-box {
+      padding: 10px 4px;
+    }
+    .stat-value {
+      font-size: 18px;
+    }
+    .stat-label {
+      font-size: 9.5px;
+    }
+    .chart-source {
+      font-size: 9.5px;
+      margin-top: 12px;
+    }
+  }
 </style>
 </head>
 <body>
@@ -139,26 +171,32 @@
     </div>
   </div>
   <div class="chart-source">
-    Source: IBM/Ponemon Institute, Cost of a Data Breach Report (2018--2025). Activity-based costing across detection, notification, post-breach response and lost business. Sample: 477 to 604 organisations per year across 16+ countries.
+    Source: IBM/Ponemon Institute, Cost of a Data Breach Report (2018--2025).
   </div>
   <div class="felcorp-footer">
     <span>Felcorp Support &copy;</span>
   </div>
 </div>
-
 <script>
+const isMobile = window.innerWidth <= 767;
 const ctx = document.getElementById('breachChart').getContext('2d');
-
 const gradient = ctx.createLinearGradient(0, 0, 0, 360);
 gradient.addColorStop(0, 'rgba(32, 116, 237, 0.25)');
 gradient.addColorStop(0.6, 'rgba(32, 116, 237, 0.06)');
 gradient.addColorStop(1, 'rgba(32, 116, 237, 0)');
-
 const data = {
-  labels: ['2018', '2019', '2020', '2021', '2022', '2023', '2024', '2025'],
   datasets: [{
     label: 'Average Cost (USD millions)',
-    data: [3.86, 3.92, 3.86, 4.24, 4.35, 4.45, 4.88, 4.44],
+    data: [
+      {x: 2018, y: 3.86},
+      {x: 2019, y: 3.92},
+      {x: 2020, y: 3.86},
+      {x: 2021, y: 4.24},
+      {x: 2022, y: 4.35},
+      {x: 2023, y: 4.45},
+      {x: 2024, y: 4.88},
+      {x: 2025, y: 4.44}
+    ],
     borderColor: '#2074ed',
     backgroundColor: gradient,
     borderWidth: 2.5,
@@ -177,62 +215,58 @@ const data = {
     pointBorderWidth: 2,
     pointRadius: function(context) {
       const i = context.dataIndex;
-      if (i === 6 || i === 7) return 7;
-      return 4;
+      if (i === 6 || i === 7) return isMobile ? 5 : 7;
+      return isMobile ? 3 : 4;
     },
     pointHoverRadius: 8,
     fill: true,
     tension: 0.3
   }]
 };
-
 const annotationPlugin = {
   id: 'customAnnotations',
   afterDatasetsDraw(chart) {
     const { ctx } = chart;
     const meta = chart.getDatasetMeta(0);
     const fontFamily = "'Aptos', 'Calibri', 'Segoe UI', sans-serif";
-
+    const labelSize = isMobile ? 12 : 14;
+    const subSize = isMobile ? 9 : 10;
     const peak = meta.data[6];
     ctx.save();
     ctx.fillStyle = '#ef6461';
-    ctx.font = `bold 14px ${fontFamily}`;
+    ctx.font = `bold ${labelSize}px ${fontFamily}`;
     ctx.textAlign = 'center';
     ctx.fillText('$4.88M', peak.x - 4, peak.y - 33);
-    ctx.font = `10px ${fontFamily}`;
+    ctx.font = `${subSize}px ${fontFamily}`;
     ctx.fillStyle = 'rgba(239, 100, 97, 0.75)';
     ctx.fillText('All-time high', peak.x - 4, peak.y - 20);
     ctx.restore();
-
     const drop = meta.data[7];
     ctx.save();
     ctx.fillStyle = '#4ade80';
-    ctx.font = `bold 14px ${fontFamily}`;
-    ctx.textAlign = 'right';
-    ctx.fillText('$4.44M', drop.x + 4, drop.y - 33);
-    ctx.font = `10px ${fontFamily}`;
+    ctx.font = `bold ${labelSize}px ${fontFamily}`;
+    ctx.textAlign = 'center';
+    ctx.fillText('$4.44M', drop.x, drop.y - 33);
+    ctx.font = `${subSize}px ${fontFamily}`;
     ctx.fillStyle = 'rgba(74, 222, 128, 0.75)';
-    ctx.fillText('First annual decline', drop.x + 4, drop.y - 20);
+    ctx.fillText('First annual decline', drop.x, drop.y - 20);
     ctx.restore();
-
     const trough = meta.data[2];
     ctx.save();
     ctx.fillStyle = 'rgba(255, 255, 255, 0.45)';
-    ctx.font = `11px ${fontFamily}`;
+    ctx.font = `${isMobile ? 10 : 11}px ${fontFamily}`;
     ctx.textAlign = 'center';
     ctx.fillText('$3.86M', trough.x, trough.y + 7);
     ctx.restore();
-
     const start = meta.data[0];
     ctx.save();
     ctx.fillStyle = 'rgba(255, 255, 255, 0.45)';
-    ctx.font = `11px ${fontFamily}`;
+    ctx.font = `${isMobile ? 10 : 11}px ${fontFamily}`;
     ctx.textAlign = 'center';
     ctx.fillText('$3.86M', start.x, start.y + 7);
     ctx.restore();
   }
 };
-
 new Chart(ctx, {
   type: 'line',
   data: data,
@@ -241,17 +275,27 @@ new Chart(ctx, {
     responsive: true,
     maintainAspectRatio: false,
     layout: {
-      padding: { top: 40, right: 80, bottom: 8, left: 8 }
+      padding: {
+        top: 40,
+        right: isMobile ? 25 : 39,
+        bottom: 8,
+        left: isMobile ? 10 : 24
+      }
     },
     scales: {
       x: {
+        type: 'linear',
+        min: 2018,
+        max: 2025.5,
         grid: {
           display: true,
           color: 'rgba(255, 255, 255, 0.04)',
           drawBorder: false
         },
         ticks: {
-          font: { family: "'Aptos', 'Calibri', sans-serif", size: 12, weight: '500' },
+          stepSize: 1,
+          callback: function(value) { return Number.isInteger(value) ? value : ''; },
+          font: { family: "'Aptos', 'Calibri', sans-serif", size: isMobile ? 10 : 12, weight: '500' },
           color: 'rgba(255, 255, 255, 0.5)'
         },
         border: { color: 'rgba(255, 255, 255, 0.1)' }
@@ -261,7 +305,7 @@ new Chart(ctx, {
         max: 5.3,
         ticks: {
           callback: function(value) { return '$' + value.toFixed(1) + 'M'; },
-          font: { family: "'Aptos', 'Calibri', sans-serif", size: 11 },
+          font: { family: "'Aptos', 'Calibri', sans-serif", size: isMobile ? 9 : 11 },
           color: 'rgba(255, 255, 255, 0.3)',
           stepSize: 0.4
         },
@@ -286,6 +330,9 @@ new Chart(ctx, {
         cornerRadius: 8,
         displayColors: false,
         callbacks: {
+          title: function(context) {
+            return context[0].parsed.x;
+          },
           label: function(context) {
             return '$' + context.parsed.y.toFixed(2) + ' million';
           }
