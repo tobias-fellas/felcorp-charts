@@ -28,7 +28,7 @@
     max-width: 100%;
     background: linear-gradient(160deg, #141a30 0%, #0f1535 40%, #111833 100%);
     border-radius: 0;
-    padding: 32px 28px 24px 28px;
+    padding: 32px 58px 24px 58px;
     border: none;
     box-shadow: none;
   }
@@ -198,10 +198,10 @@ const annotationPlugin = {
     ctx.fillStyle = '#ef6461';
     ctx.font = `bold 14px ${fontFamily}`;
     ctx.textAlign = 'center';
-    ctx.fillText('$4.88M', peak.x - 4, peak.y - 18);
+    ctx.fillText('$4.88M', peak.x - 4, peak.y - 33);
     ctx.font = `10px ${fontFamily}`;
     ctx.fillStyle = 'rgba(239, 100, 97, 0.75)';
-    ctx.fillText('All-time high', peak.x - 4, peak.y - 5);
+    ctx.fillText('All-time high', peak.x - 4, peak.y - 20);
     ctx.restore();
 
     const drop = meta.data[7];
@@ -209,10 +209,10 @@ const annotationPlugin = {
     ctx.fillStyle = '#4ade80';
     ctx.font = `bold 14px ${fontFamily}`;
     ctx.textAlign = 'right';
-    ctx.fillText('$4.44M', drop.x + 4, drop.y - 18);
+    ctx.fillText('$4.44M', drop.x + 4, drop.y - 33);
     ctx.font = `10px ${fontFamily}`;
     ctx.fillStyle = 'rgba(74, 222, 128, 0.75)';
-    ctx.fillText('AI-driven detection', drop.x + 4, drop.y - 5);
+    ctx.fillText('First annual decline', drop.x + 4, drop.y - 20);
     ctx.restore();
 
     const trough = meta.data[2];
@@ -220,7 +220,7 @@ const annotationPlugin = {
     ctx.fillStyle = 'rgba(255, 255, 255, 0.45)';
     ctx.font = `11px ${fontFamily}`;
     ctx.textAlign = 'center';
-    ctx.fillText('$3.86M', trough.x, trough.y + 22);
+    ctx.fillText('$3.86M', trough.x, trough.y + 7);
     ctx.restore();
 
     const start = meta.data[0];
@@ -228,7 +228,7 @@ const annotationPlugin = {
     ctx.fillStyle = 'rgba(255, 255, 255, 0.45)';
     ctx.font = `11px ${fontFamily}`;
     ctx.textAlign = 'center';
-    ctx.fillText('$3.86M', start.x, start.y + 22);
+    ctx.fillText('$3.86M', start.x, start.y + 7);
     ctx.restore();
   }
 };
