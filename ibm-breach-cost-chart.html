@@ -17,17 +17,18 @@
     font-weight: 700;
   }
   * { margin: 0; padding: 0; box-sizing: border-box; }
-  body {
+  html, body {
+    height: 100%;
     font-family: 'Aptos', 'Calibri', 'Segoe UI', sans-serif;
-    background: #0f1535;
+    background: linear-gradient(160deg, #141a30 0%, #0f1535 40%, #111833 100%);
     padding: 0;
     overflow: hidden;
   }
   .chart-container {
     width: 100%;
     max-width: 100%;
-    min-height: 100vh;
-    background: linear-gradient(160deg, #141a30 0%, #0f1535 40%, #111833 100%);
+    min-height: 100%;
+    background: transparent;
     border-radius: 0;
     padding: 3%;
     border: none;
